@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<root javaPackageBase="mtime.ml.crawler.service">
+    <services>
+        <service name="InvokeCrawler" description="调用爬取个性网服务">
+            <method name="InvokeCrawler" description="调用一次爬取个性网服务">
+                <response>
+                    <field modifier="required" type="bool" name="Result" order="1" description="结果"/>
+                </response>
+            </method>
+        </service>
+    </services>
+</root>
