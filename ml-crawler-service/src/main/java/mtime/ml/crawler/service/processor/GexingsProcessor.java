@@ -1,6 +1,8 @@
 package mtime.ml.crawler.service.processor;
 
-import mtime.ml.crawler.service.entity.GexingsModel;
+import mtime.lark.pb.utils.StringUtils;
+import mtime.ml.crawler.service.entity.MlGexings;
+import mtime.ml.crawler.service.util.HtmlUtil;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
@@ -39,18 +41,7 @@ public class GexingsProcessor implements PageProcessor {
             //.setCharset("utf-8")
             .setUserAgent(userAgent);
 
-    public static void main(String[] args) {
-        RedisPriorityScheduler redisPriorityScheduler = new RedisPriorityScheduler("127.0.0.1");
-        Spider.create(new GexingsProcessor())
-              .addUrl("http://www.gexings.com")
-              .thread(Runtime.getRuntime()
-                             .availableProcessors())
-              .setScheduler(redisPriorityScheduler)
-              .addPipeline(new FilePipeline("d://data"))
-              .addPipeline(new ConsolePipeline())
-              .run();
 
-    }
 
     @Override
     public void process(Page page) {
@@ -103,28 +94,34 @@ public class GexingsProcessor implements PageProcessor {
             String place = page.getHtml()
                                .css("div.place")
                                .get();
-            place = Utils.getHtmlText(place);
+            place = HtmlUtil.getHtmlText(place);
             String title = page.getHtml()
                                .css("div.title")
                                .css("h2")
                                .toString();
-            title = Utils.getHtmlText(title);
+            title = HtmlUtil.getHtmlText(title);
             String info = page.getHtml()
                               .css("div.info")
                               .get();
-            info = Utils.getHtmlText(info);
+            info = HtmlUtil.getHtmlText(info);
             String content = page.getHtml()
                                  .css("div.content")
 
                                  .get();
-            content = Utils.getHtmlText(content);
+            content = HtmlUtil.getHtmlText(content);
 
-            GexingsModel gexingsModel = new GexingsModel();
-            gexingsModel.setContent(content);
-            gexingsModel.setInfo(info);
-            gexingsModel.setPlace(place);
-            gexingsModel.setTitle(title);
-            page.putField(GexingsModel.class.getSimpleName(), gexingsModel);
+            MlGexings gexingsModel = new MlGexings();
+            if(StringUtils.isEmpty(title)&&StringUtils.isEmpty(place)&&StringUtils.isEmpty(info)&&StringUtils.isEmpty(content)){
+                 page.setSkip(true);
+            }else {
+                gexingsModel.setContent(content);
+                gexingsModel.setInfo(info);
+                gexingsModel.setPlace(place);
+                gexingsModel.setTitle(title);
+                gexingsModel.setUrl(page.getUrl()
+                                        .toString());
+                page.putField(MlGexings.class.getSimpleName(), gexingsModel);
+            }
 
 
         }
@@ -135,5 +132,18 @@ public class GexingsProcessor implements PageProcessor {
     @Override
     public Site getSite() {
         return site;
+    }
+
+    public static void main(String[] args) {
+        RedisPriorityScheduler redisPriorityScheduler = new RedisPriorityScheduler("127.0.0.1");
+        Spider.create(new GexingsProcessor())
+              .addUrl("http://www.gexings.com")
+              .thread(Runtime.getRuntime()
+                             .availableProcessors())
+              .setScheduler(redisPriorityScheduler)
+              .addPipeline(new FilePipeline("d://data"))
+              .addPipeline(new ConsolePipeline())
+              .run();
+
     }
 }

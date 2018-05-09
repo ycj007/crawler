@@ -2,17 +2,19 @@ package mtime.ml.crawler.service;
 
 import mtime.lark.net.rpc.RpcApplication;
 import mtime.lark.net.rpc.config.ServerOptions;
+import mtime.lark.util.config.AppConfig;
+import mtime.lark.util.redis.RedisClient;
 import mtime.ml.crawler.service.pipeline.GexingsDaoPipeline;
 import mtime.ml.crawler.service.processor.GexingsProcessor;
+import mtime.ml.crawler.service.scheduler.RedisClientPriorityScheduler;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
+import org.springframework.util.StringUtils;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
 import us.codecraft.webmagic.scheduler.RedisPriorityScheduler;
-
-import java.io.IOException;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class Bootstrap {
@@ -24,32 +26,25 @@ public class Bootstrap {
     }
 
 
-    @Bean(destroyMethod = "close")
-    Spider spider()  {
-        Spider spider = Spider.create(new GexingsProcessor())
-                              .addUrl("http://www.gexings.com")
-                              .thread(Runtime.getRuntime()
-                                             .availableProcessors())
-                              .setScheduler(redisPriorityScheduler())
 
-                              .addPipeline(gexingsDaoPipeline());
-        spider.run();
-        return spider;
-    }
 
 
     @Bean
-    RedisPriorityScheduler redisPriorityScheduler() {
+    RedisClientPriorityScheduler redisClientPriorityScheduler() {
 
-        RedisPriorityScheduler redisPriorityScheduler = new RedisPriorityScheduler("127.0.0.1");
+        RedisClientPriorityScheduler redisPriorityScheduler = new RedisClientPriorityScheduler(redisClient());
         return redisPriorityScheduler;
     }
-
     @Bean
-    GexingsDaoPipeline gexingsDaoPipeline() {
+    RedisClient redisClient() {
+        String redisConfig =
+                AppConfig.getDefault()
+                         .getCustom()
+                         .getString("mtime.ml.crawler.redis.name");
+        RedisClient client = StringUtils.isEmpty(redisConfig) ?
+                new RedisClient("SvsRedisBiz") : new RedisClient(redisConfig);
 
-
-        return new GexingsDaoPipeline();
+        return client;
     }
 
 

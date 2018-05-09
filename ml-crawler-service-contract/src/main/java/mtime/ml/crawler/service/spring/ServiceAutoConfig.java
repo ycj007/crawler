@@ -1,7 +1,7 @@
 package mtime.ml.crawler.service.spring;
 
 import mtime.lark.net.rpc.RpcClient;
-import mtime.ml.crawler.service.iface.TestService;
+import mtime.ml.crawler.service.iface.InvokeCrawlerService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +13,12 @@ import org.springframework.core.annotation.Order;
 @Lazy
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class ServiceAutoConfig {
-    private final String SERVER = "mtime.test.ml.crawler.service";
+    private final String SERVER = "mtime.ml.crawler.service";
+
 
     @Bean
     @ConditionalOnMissingBean
-    public TestService testService() {
-        return RpcClient.get(SERVER, TestService.class);
+    public InvokeCrawlerService invokeCrawlerService() {
+        return RpcClient.get(SERVER, InvokeCrawlerService.class);
     }
 }
