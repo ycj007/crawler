@@ -1,10 +1,9 @@
-package mtime.ml.crawler.service.scheduler;
+package mtime.ml.crawler.common.scheduler;
 
 import com.alibaba.fastjson.JSON;
 import mtime.lark.util.redis.RedisClient;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Request;
 import us.codecraft.webmagic.Task;
 import us.codecraft.webmagic.scheduler.DuplicateRemovedScheduler;

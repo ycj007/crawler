@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath></relativePath>
     </parent>
-    <groupId>mtime.test</groupId>
+    <groupId>mtime.ml</groupId>
     <artifactId>ml-crawler-service-contract</artifactId>
     <version>1.0-SNAPSHOT</version>             
 </project>

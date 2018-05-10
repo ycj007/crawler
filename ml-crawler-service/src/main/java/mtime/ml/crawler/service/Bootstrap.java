@@ -4,17 +4,12 @@ import mtime.lark.net.rpc.RpcApplication;
 import mtime.lark.net.rpc.config.ServerOptions;
 import mtime.lark.util.config.AppConfig;
 import mtime.lark.util.redis.RedisClient;
-import mtime.ml.crawler.service.pipeline.GexingsDaoPipeline;
-import mtime.ml.crawler.service.processor.GexingsProcessor;
-import mtime.ml.crawler.service.scheduler.RedisClientPriorityScheduler;
+import mtime.ml.crawler.common.scheduler.RedisClientPriorityScheduler;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Scope;
 import org.springframework.util.StringUtils;
-import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.scheduler.RedisPriorityScheduler;
 
 @SpringBootApplication(exclude = {MongoAutoConfiguration.class, MongoDataAutoConfiguration.class})
 public class Bootstrap {
@@ -26,15 +21,13 @@ public class Bootstrap {
     }
 
 
-
-
-
     @Bean
     RedisClientPriorityScheduler redisClientPriorityScheduler() {
 
         RedisClientPriorityScheduler redisPriorityScheduler = new RedisClientPriorityScheduler(redisClient());
         return redisPriorityScheduler;
     }
+
     @Bean
     RedisClient redisClient() {
         String redisConfig =

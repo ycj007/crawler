@@ -9,49 +9,20 @@
         <version>1.0-SNAPSHOT</version>
         <relativePath></relativePath>
     </parent>
-    <groupId>mtime.test</groupId>
+    <groupId>mtime.ml</groupId>
     <artifactId>ml-crawler-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     
     <dependencies>
         <dependency>
-            <groupId>mtime.test</groupId>
+            <groupId>mtime.ml</groupId>
             <artifactId>ml-crawler-service-contract</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>us.codecraft</groupId>
-            <artifactId>webmagic-core</artifactId>
-            <version>0.7.3</version>
-        </dependency>
-        <dependency>
-            <groupId>us.codecraft</groupId>
-            <artifactId>webmagic-extension</artifactId>
-            <version>0.7.3</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/us.codecraft/xsoup -->
-        <dependency>
-            <groupId>us.codecraft</groupId>
-            <artifactId>xsoup</artifactId>
-            <version>0.3.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-client -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>6.2.4</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client -->
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-high-level-client</artifactId>
-            <version>6.2.4</version>
+            <groupId>mtime.ml</groupId>
+            <artifactId>ml-crawler-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
 
 
