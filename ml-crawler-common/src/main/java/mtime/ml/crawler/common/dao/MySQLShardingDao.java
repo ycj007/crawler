@@ -1,4 +1,4 @@
-package mtime.ml.crawler.service.dao;
+package mtime.ml.crawler.common.dao;
 
 import mtime.lark.db.jsd.*;
 
@@ -65,7 +65,7 @@ public abstract class MySQLShardingDao<T> {
      * @param keys the keys
      * @return the database
      */
-    public Database openWriteShard(Object... keys) {
+    public Query openWriteShard(Object... keys) {
         return DatabaseFactory.openWriteShard(getDBNodeName(), keys);
     }
 
@@ -83,7 +83,7 @@ public abstract class MySQLShardingDao<T> {
      *
      * @return the database
      */
-    public Database openDefaultWriteShard() {
+    public Query openDefaultWriteShard() {
         return DatabaseFactory.openWriteShard(getDBNodeName(), 1);
     }
 

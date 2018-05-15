@@ -29,6 +29,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>mtime.lark</groupId>
+            <artifactId>lark-db</artifactId>
+            <version>1.0.33</version>
+        </dependency>
+        <dependency>
             <groupId>us.codecraft</groupId>
             <artifactId>webmagic-core</artifactId>
             <version>0.7.3</version>
@@ -62,6 +67,25 @@
             <artifactId>elasticsearch-rest-high-level-client</artifactId>
             <version>6.2.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.chenlb.mmseg4j</groupId>
+            <artifactId>mmseg4j-core</artifactId>
+            <version> 1.10.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.janeluo/ikanalyzer -->
+        <dependency>
+            <groupId>com.janeluo</groupId>
+            <artifactId>ikanalyzer</artifactId>
+            <version>2012_u6</version>
+        </dependency>
+        <dependency>
+            <groupId>mtime.lark</groupId>
+            <artifactId>lark-db</artifactId>
+            <version>1.1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

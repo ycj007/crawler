@@ -27,6 +27,8 @@ public class MlGexings {
     private String info;
     //具体内容
     private String content;
+    //分过词的内容
+    private String resolveContent;
     //页面url
     private String url;
 
