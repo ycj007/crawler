@@ -64,7 +64,7 @@ public class HtmlToPlainText {
             } else if (StringUtil.in(name, "p", "h1", "h2", "h3", "h4", "h5")) {
                 append("\n\n");
             } else if (name.equals("a")) {
-                append(String.format(" <%s>", node.absUrl("href")));
+                //append(String.format(" <%s>", node.absUrl("href")));
             }
         }
 

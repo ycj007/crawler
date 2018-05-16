@@ -120,7 +120,7 @@ public class GexingsProcessor implements PageProcessor {
                 gexingsModel.setTitle(title);
                 gexingsModel.setUrl(page.getUrl()
                                         .toString());
-                page.putField(MlGexings.class.getSimpleName(), gexingsModel);
+                page.putField("data", gexingsModel);
             }
 
 
