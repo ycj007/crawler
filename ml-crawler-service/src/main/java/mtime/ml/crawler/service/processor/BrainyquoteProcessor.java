@@ -3,6 +3,7 @@ package mtime.ml.crawler.service.processor;
 import com.google.common.collect.Lists;
 import mtime.lark.pb.utils.StringUtils;
 import mtime.ml.crawler.service.Bootstrap;
+import mtime.ml.crawler.service.constant.DefaultConstant;
 import mtime.ml.crawler.service.entity.MlQuote;
 import mtime.ml.crawler.service.util.HtmlUtil;
 import us.codecraft.webmagic.Page;
@@ -15,7 +16,6 @@ import us.codecraft.webmagic.selector.Selectable;
 import java.util.List;
 
 import static mtime.ml.crawler.service.constant.CategoryConstant.*;
-import static org.eclipse.jetty.util.security.Constraint.NONE;
 
 /**
  * 花瓣网抽取器。<br>
@@ -89,7 +89,7 @@ public class BrainyquoteProcessor implements PageProcessor {
                                 MlQuote quote = packageData(node, page.getUrl()
                                                                       .get());
                                 if (quote != null) {
-                                    quote.setInfo(info);
+                                    quote.setInfo(info.replace("Quotes"," - "));
 
                                     if (page.getUrl()
                                             .regex("https://www\\.brainyquote\\.com/authors/\\w+")
@@ -149,8 +149,8 @@ public class BrainyquoteProcessor implements PageProcessor {
             /**
              * 初始化数据
              */
-            data.setTopic(NONE);
-            data.setInfo(NONE);
+            data.setTopic(DefaultConstant.NONE);
+            data.setInfo(DefaultConstant.NONE);
             data.setUrl(url);
             String originalContet = node.css(".b-qt")
                                         .get();
