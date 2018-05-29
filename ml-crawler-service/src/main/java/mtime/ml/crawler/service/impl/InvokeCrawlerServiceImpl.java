@@ -14,10 +14,10 @@ import mtime.ml.crawler.service.entity.MlQuote;
 import mtime.ml.crawler.service.iface.InvokeCrawlerService;
 import mtime.ml.crawler.service.processor.BrainyquoteProcessor;
 import mtime.ml.crawler.service.processor.GexingsProcessor;
+import mtime.ml.crawler.service.util.EventUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.Spider;
-import us.codecraft.webmagic.pipeline.ConsolePipeline;
 
 import java.util.List;
 
@@ -32,43 +32,49 @@ public class InvokeCrawlerServiceImpl implements InvokeCrawlerService {
     private MlGexingsDao mlGexingsDao;
     @Autowired
     private MlQuoteDao mlQuoteDao;
+    @Autowired
+    private EventUtil eventUtil;
 
 
     @Override
     public InvokeCrawlerDto.InvokeCrawlerResponse invokeCrawler() {
-
-
-       // invokeGexing();
+        //invokeGexing();
         invokerQuote();
+        //eventUtil.execute();
         InvokeCrawlerDto.InvokeCrawlerResponse invokeCrawlerResponse = new InvokeCrawlerDto.InvokeCrawlerResponse();
         invokeCrawlerResponse.setResult(true);
         return invokeCrawlerResponse;
     }
 
 
-    private void invokerQuote(){
-        String path = Bootstrap.class.getClassLoader().getResource("config/config.ini").getPath();
+    private void invokerQuote() {
+        String path = Bootstrap.class.getClassLoader()
+                                     .getResource("config/config.ini")
+                                     .getPath();
 
         String phantomjsPath = "config/phantomjs";
         String os = System.getProperty("os.name");
         if (os != null && os.startsWith("Windows")) {
-            phantomjsPath =  "config/phantomjs.exe";
+            phantomjsPath = "config/phantomjs.exe";
         }
-            String exePath = Bootstrap.class.getClassLoader().getResource(phantomjsPath).getPath();
+        String exePath = Bootstrap.class.getClassLoader()
+                                        .getResource(phantomjsPath)
+                                        .getPath();
         System.setProperty("selenuim_config", path);
         System.setProperty("phantomjs_exec_path", exePath);
         List<MlQuote> list = Lists.newArrayList();
         DaoPipeline quotePipeline = new DaoPipeline(mlQuoteDao, list);
         Spider.create(new BrainyquoteProcessor())
               .addPipeline(quotePipeline)
-              //.addPipeline(new FilePipeline("d://data"))
-              //.setDownloader(new SeleniumDownloaderExt("D:\\chromedriver\\chromedriver_win32\\chromedriver.exe"))
-               .setDownloader(new SeleniumDownloaderExt())
+              .setDownloader(new SeleniumDownloaderExt())
+              .setScheduler(redisClientPriorityScheduler)
+              .thread(Runtime.getRuntime()
+                             .availableProcessors())
               .addUrl("https://www.brainyquote.com/")
               .run();
     }
 
-    private void invokeGexing(){
+    private void invokeGexing() {
         MlGexings mlGexings = new MlGexings();
 
         DaoPipeline gexingsDaoPipeline = new DaoPipeline(mlGexingsDao, mlGexings);
@@ -76,8 +82,10 @@ public class InvokeCrawlerServiceImpl implements InvokeCrawlerService {
                               .addUrl("http://www.gexings.com")
                               .thread(Runtime.getRuntime()
                                              .availableProcessors())
-                              //.setScheduler(redisClientPriorityScheduler)
+                              .setScheduler(redisClientPriorityScheduler)
                               .addPipeline(gexingsDaoPipeline);
         spider.run();
     }
+
+
 }

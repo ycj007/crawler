@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class MlQuote {
     @Id
     @GeneratedValue
-    private int id;
+    private long id;
     // url+content hash
     private String hash;
     private String url;
